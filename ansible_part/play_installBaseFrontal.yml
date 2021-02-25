@@ -1,0 +1,6 @@
+---
+- name: Installation des logiciels de base du Frontal
+  hosts: frontal
+  become: true
+  roles:
+    - installServeurBaseFrontal

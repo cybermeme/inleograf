@@ -1,0 +1,41 @@
+---
+- name: deployement de mariadb
+  containers.podman.podman_container:
+    name: mariadb_{{pod_nextcloud}}
+    state: started
+    pod: "{{ pod_nextcloud }}"
+    image: "{{ nextcloud_db_image }}"
+    cpus: "{{ nextcloud_CPU_db }}"
+    volume: "{{ pod_nextcloud }}_vol_db:/var/lib/mysql"
+    env:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: "{{ nextcloud_dbname }}"
+      MYSQL_USER: "{{ nextcloud_dbuser }}"
+      MYSQL_PASSWORD: "{{ nextcloud_dbpassw }}"
+
+- name: deployment de nextcloud
+  containers.podman.podman_container:
+    name: nextcloud_{{pod_nextcloud}}
+    state: started
+    pod: "{{ pod_nextcloud }}"
+    image: "{{ nextcloud_web_image }}"
+    cpus: "{{ nextcloud_CPU_web }}"
+    volume:
+      - "{{ pod_nextcloud }}_vol_app:/var/www/html"
+      - "{{ pod_nextcloud }}_vol_data:/var/www/html/data"
+    env:
+      MYSQL_HOST: "{{ nextcloud_fqdn }}"
+      MYSQL_DATABASE: "{{ nextcloud_dbname }}"
+      MYSQL_USER: "{{ nextcloud_dbuser }}"
+      MYSQL_PASSWORD: "{{ nextcloud_dbpassw }}"
+      NEXTCLOUD_ADMIN_USER: "{{ nextcloud_adminuser }}"
+      NEXTCLOUD_ADMIN_PASSWORD: "{{ nextcloud_adminpasswd }}"
+      NEXTCLOUD_TRUSTED_DOMAINS: "{{ nextcloud_fqdn }}"
+  notify:
+    - creation_systemd_pod_nextcloud
+ #   - rechargement_systemd
+    - persistance_pod_pod_nextcloud
+
+# https://fedoramagazine.org/nextcloud-20-on-fedora-linux-with-podman/
+# https://hub.docker.com/_/nextcloud
+# https://hub.docker.com/_/mariadb

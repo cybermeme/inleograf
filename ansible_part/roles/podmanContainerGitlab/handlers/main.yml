@@ -1,0 +1,22 @@
+---
+- name: creation_systemd_gitlab_tag_id
+  command:
+    chdir: '~/.config/systemd/user/'
+    cmd: "podman generate systemd --files --name {{ gitlab_tag_id }}"
+
+- name: rechargement_systemd
+  systemd:
+    daemon-reload: true
+    scope: 'user'
+
+- name: persistance_gitlab_tag_id
+  systemd:
+    scope: 'user'
+    enabled: true
+    #state: 'started'
+    name: "{{ item }}"
+    daemon-reload: true
+  loop:
+    - "container-{{ gitlab_tag_id }}.service"
+
+# handlers file for roles/podmanPodMail

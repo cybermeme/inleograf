@@ -1,0 +1,10 @@
+$TTL 86400
+@	IN SOA	ns.{{frontal_domain}}. contact.{{frontal_domain}} (
+					2020081401 ; serial
+                                        2013072106; refresh
+                                        3600    ; retry
+                                        604800  ; expire
+                                        86400 ) ; minimum
+@	IN NS ns.{{frontal_domain}}.
+170	IN PTR mail.{{frontal_domain}}.
+170     IN PTR ns.{{frontal_domain}}.

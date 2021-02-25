@@ -1,0 +1,24 @@
+---
+- name: Creation du pod des services nextcloud
+  containers.podman.podman_pod:
+    name: "{{ pod_nextcloud }}"
+    state: started
+    hostname: "{{ nextcloud_fqdn }}" 
+    ports:
+      - "{{ nextcloud_port_http }}:80"
+      - "{{ nextcloud_port_https }}:443"
+
+- name: Creation du volume de fichers de l apps de nextcloud
+  containers.podman.podman_volume:
+    name: "{{ pod_nextcloud }}_vol_app"
+    state: present
+
+- name: Creation du volume de fichers de la db de nextcloud
+  containers.podman.podman_volume:
+    name: "{{ pod_nextcloud }}_vol_db"
+    state: present
+
+- name: Creation du volume de fichers des datas dans nextcloud
+  containers.podman.podman_volume:
+    name: "{{ pod_nextcloud }}_vol_data"
+    state: present

@@ -1,0 +1,5 @@
+---
+- include_tasks: mailPodPrepa.yml
+- include_tasks: mailPodCreateContainers.yml
+- include_tasks: mailPodContainers.yml
+# tasks file for roles/podmanPodMail

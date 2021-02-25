@@ -1,0 +1,17 @@
+---
+- name: Installation de Certbot
+  containers.podman.podman_container:
+    name: Certbot
+    image: "{{ certbot_image }}"
+    state: started
+    cpus: "{{ certbot_CPU }}"
+    # privileged: true
+    publish:
+      - "{{ certbot_port_http }}:80"
+    #  - "443:443"
+    volume:
+      - certbot_vol_etc_Letsencrypt:/etc/letsencrypt
+      - certbot_vol_var_lib_Letsencrypt:/var/lib/letsencrypt
+
+#https://certbot.eff.org/docs/install.html#running-with-docker
+#Lancer certbot avec certonly va stoquer les certif dans /etc/letsencrypt/live

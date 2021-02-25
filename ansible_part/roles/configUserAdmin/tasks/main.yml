@@ -1,0 +1,56 @@
+---
+#SuperAdmin
+- name: creation du compte administrateur
+  user:
+    name: "{{ user_admin }}" 
+
+- name: donner les droits administrateur
+  copy:
+    dest: /etc/sudoers.d/{{user_admin}}
+    content: "{{ user_admin }} ALL=(ALL) NOPASSWD: ALL"
+    validate: /usr/sbin/visudo -cf %s
+
+- name: copie de la clef publique pour le ssh pour {{ user_admin }}
+  authorized_key:
+    user: "{{ user_admin }}"
+    state: present
+    manage_dir: true
+    key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
+
+- name: On interdit le ssh de root pour la securite
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regex: '^PermitRootLogin'
+    insertafter: '#LoginGraceTime'
+    line: 'PermitRootLogin no'
+  notify: restart_sshd
+
+#PodmanAdmin
+- name: creation du compte administrateur de pod Rootless
+  user:
+    name: "{{ user_rootless }}"
+    
+- name: copie de la clef publique pour le ssh pour {{ user_rootless }}
+  authorized_key:
+    user: "{{ user_rootless }}"
+    state: present
+    manage_dir: true
+    key: "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
+
+- name: Creation du dossier pour l'utilisation des systemd personnalises des rootless
+  file:
+    path: /home/{{ user_rootless }}/.config/systemd/user/
+    state: directory
+    owner: "{{ user_rootless }}"
+    group: "{{ user_rootless }}"
+    mode: '750'
+  notify: rootless_systemd
+ 
+- name: export du repertoire pour cgroup2 avec systemd
+  lineinfile:
+    path: /home/{{ user_rootless }}/.bashrc
+    regex: "^# User specific aliases and functions"
+    insertafter: "^#"
+    line: "export XDG_RUNTIME_DIR=/run/user/$(id -u {{ user_rootless }})"
+#
+# tasks file for configUserAdmin

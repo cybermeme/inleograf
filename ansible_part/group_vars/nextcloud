@@ -1,0 +1,16 @@
+pod_nextcloud: nextcloud-01
+nextcloud_db_image: 'docker.io/library/mariadb:10'
+nextcloud_web_image: 'docker.io/library/nextcloud:20'
+nextcloud_port_http: 10180
+nextcloud_port_https: 10181
+nextcloud_dbname: nextcloud
+nextcloud_dbhost: mariadb_pod_nextcloud
+nextcloud_CPU_db: '0.3'
+nextcloud_CPU_web: '0.3'
+
+
+nextcloud_fqdn: 'nextcloud.exemple.local'
+nextcloud_dbuser: nextcloud
+nextcloud_dbpassw: nextcloudpwd
+nextcloud_adminuser: superadmin
+nextcloud_adminpasswd: superpassword

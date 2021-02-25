@@ -1,0 +1,21 @@
+$ORIGIN {{frontal_domain}}.
+$TTL 86400
+@	IN SOA		ns.{{frontal_domain}}. contact.{{frontal_domain}}. (
+					2020081401 	; serial
+					2013072106	; refresh
+					3600		; retry
+					604800		; expire
+					86400	)	; 
+;
+		IN NS  		ns.{{frontal_domain}}.
+		IN MX  	10  	mail.{{frontal_domain}}.
+
+ns		IN A 		{{frontal_ip}}
+master		IN CNAME 	ns.{{frontal_domain}}.
+mail		IN A 		{{frontal_ip}}
+www		IN A 		{{frontal_ip}}
+elk		IN CNAME 	www.{{frontal_domain}}.
+gitlab		IN CNAME 	www.{{frontal_domain}}.
+nextcloud	IN CNAME 	www.{{frontal_domain}}.
+prestashop	IN CNAME 	www.{{frontal_domain}}.
+wordpress	IN CNAME 	www.{{frontal_domain}}.

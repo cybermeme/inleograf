@@ -1,0 +1,11 @@
+---
+- name: restart_sshd
+  systemd:
+    name: sshd.service
+    state: restarted
+
+- name: rootless_systemd
+  command:
+    cmd: "loginctl enable-linger {{ user_rootless }}"
+
+# handlers file for configUserAdmin

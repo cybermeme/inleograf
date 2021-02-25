@@ -1,0 +1,14 @@
+pod_wordpress: wordpress-01
+wordpress_db_image: 'docker.io/library/mariadb:10'
+wordpress_web_image: 'docker.io/library/wordpress:latest'
+wordpress_port_http: 10184
+wordpress_dbname: wordpress
+wordpress_CPU_db: '0.3'
+wordpress_CPU_web: '0.3'
+
+
+wordpress_fqdn: 'wordpress.exemple.local'
+wordpress_dbuser: wpdbuser
+wordpress_dbpassw: wpdbpass
+wordpress_admin_login: superadmin
+wordpress_adminpasswd: superpassword

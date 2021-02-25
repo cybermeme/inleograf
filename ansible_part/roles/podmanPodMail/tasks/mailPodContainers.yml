@@ -1,0 +1,51 @@
+---
+- name: Mise en place du container postfix dans le pod
+  containers.podman.podman_container:
+    name: "postfix_{{ pod_mail }}"
+    state: started
+    pod: "{{ pod_mail }}"
+    image: "{{ mails_image_postfix }}"
+    cpus: "{{ mails_CPU_postfix }}"
+    volume: 
+      - "{{ pod_mail }}_postfix_etc_postfix:/etc/postfix/"
+      - "{{ pod_mail }}_postfix_vars_pool_mail:/var/spool/postfix/"
+      - "{{ pod_mail }}_vol_mails:/srv/mail/"
+
+- name: Mise en place du container mariadb dans le pod
+  containers.podman.podman_container:
+    name: "mariadb_{{ pod_mail }}"
+    state: started
+    pod: "{{ pod_mail }}"
+    image: "{{ mails_image_db }}"
+    cpus: "{{ mails_CPU_db }}"
+    volume: "{{ pod_mail }}_vol_db:/var/lib/mysql"
+    env:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MARIADB_DATABASE: "{{ mails_db_name }}"
+      MARIADB_USER: "{{ mails_db_user }}"
+      MARIADB_PASSWORD: "{{ mails_db_passwd }}"
+
+- name: Mise en place du container dkim dans le pod
+  containers.podman.podman_container:
+    name: "opendkim_{{ pod_mail }}"
+    state: started
+    pod: "{{ pod_mail }}" 
+    image: "{{ mails_image_dkim }}"
+    cpus: "{{ mails_CPU_dkim }}"
+    volume: "{{ pod_mail }}_vol_dkim:/etc/opendkim/"
+
+- name: Mise en place du container dovecot dans le pod
+  containers.podman.podman_container:
+    name: "dovecot_{{ pod_mail }}"
+    state: started
+    pod: "{{ pod_mail }}"
+    image: "{{ mails_image_dovecot }}"
+    recreate: true
+    cpus: "{{ mails_CPU_dovecot }}"
+    volume: 
+      - "{{ pod_mail }}_dovecot_etc_dovecot:/etc/dovecot/"
+      - "{{ pod_mail }}_vol_mails:/srv/mail/"
+  notify: 
+    - creation_systemd_{{ pod_mail }}
+   # - rechargement_systemd
+    - persistance-pod_{{ pod_mail }}

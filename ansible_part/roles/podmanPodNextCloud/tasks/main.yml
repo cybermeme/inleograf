@@ -1,0 +1,4 @@
+---
+- include_tasks: nextcloudPodPreda.yml
+- include_tasks: nextcloudPodContainers.yml
+# tasks file for podmanPodNextCloud

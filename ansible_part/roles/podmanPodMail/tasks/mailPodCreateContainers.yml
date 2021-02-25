@@ -1,0 +1,14 @@
+---
+- name: Copie du dockerfile en local
+  copy:
+    src: Dockerfiles/postfix
+    dest: ~/Dockerfiles
+    owner: "{{ user_rootless }}"
+    mode: '500'
+
+- name: Creation de l'image de postfix
+  containers.podman.podman_image:
+    name: postfix
+    path: Dockerfiles/postfix
+    build:
+      cache: false

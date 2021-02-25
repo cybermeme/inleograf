@@ -1,0 +1,12 @@
+---
+- name: Installation de Podman
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - crun
+    - podman
+  when: ansible_os_family == 'RedHat'
+
+
+#crun va serir pour utiliser podman en rootless sur centos stream 8

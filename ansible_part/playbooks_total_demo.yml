@@ -1,0 +1,38 @@
+---
+- name: Demo du full projet on importe les infos du vault
+  hosts: localhost
+  gather_facts: false
+#  tasks:
+#    - name: inclusion des variables
+#      include_vars: 
+#        file: vault_vars.yml
+
+#- name: Phase 1 
+#  import_playbook: play_createUser.yml
+
+- name: Phase 2 
+  import_playbook: play_installBase.yml
+
+- name: Phase 3 
+  import_playbook: play_installBaseFrontal.yml
+
+#- name: Phase 4 
+#  import_playbook: play_podmanRootLessFrontal.yml
+
+- name: Phase 5
+  import_playbook: play_podmanRootLessGitlab.yml
+
+- name: Phase 6 
+  import_playbook: play_podmanRootLessNextcloud.yml
+
+- name: Phase 7
+  import_playbook: play_podmanRootLessPrestashop.yml
+
+- name: Phase 8
+  import_playbook: play_podmanRootLessWordpress.yml
+
+- name: Phase 9
+  import_playbook: play_podmanRootLessELK.yml
+
+- name: Phase 10
+  import_playbook: play_podmanRootLessMail.yml

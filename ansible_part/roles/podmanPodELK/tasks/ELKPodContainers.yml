@@ -1,0 +1,26 @@
+---
+- name: deployement d'elastic search
+  containers.podman.podman_container:
+    name: elastic-search_{{pod_ELK}}
+    state: started
+    pod: "{{ pod_ELK }}"
+    image: "{{ ELK_image_elastisearch }}"
+    cpus: "{{ ELK_CPU_elastic }}"
+    volume: "{{ pod_ELK }}_vol_data:/usr/share/elasticsearch/data"
+    env:
+      discovery.type: single-node
+
+- name: deployment de kibana
+  containers.podman.podman_container:
+    name: kibana_{{pod_ELK}}
+    state: started
+    pod: "{{ pod_ELK }}"
+    image: "{{ ELK_image_kibana }}"
+    cpus: "{{ ELK_CPU_kibana }}"
+    env:
+      ELASTICSEARCH_HOSTS: 'http://127.0.0.1:9200'
+  notify:
+    - creation_systemd_pod_ELK
+   # - rechargement_systemd
+    - persistance_pod_pod_ELK
+

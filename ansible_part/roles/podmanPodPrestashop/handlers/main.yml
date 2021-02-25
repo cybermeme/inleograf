@@ -1,0 +1,23 @@
+---
+- name: creation_systemd_pod_prestashop
+  command:
+    chdir: '~/.config/systemd/user/'
+    cmd: "podman generate systemd --files --name {{ pod_prestashop }}"
+
+- name: rechargement_systemd
+  systemd:
+    daemon-reload: true
+    scope: 'user'
+
+- name: persistance_pod_pod_prestashop
+  systemd:
+    scope: 'user'
+    enabled: true
+    name: "{{ item }}"
+    daemon-reload: true
+  loop:
+    - "pod-{{ pod_prestashop }}.service"
+    - "container-mariadb_{{ pod_prestashop }}.service"
+    - "container-prestashop_{{ pod_prestashop }}.service"
+
+# handlers file for prestashop

@@ -1,0 +1,23 @@
+---
+- name: Creation du pod du service Wordpress
+  containers.podman.podman_pod:
+    name: "{{ pod_wordpress }}"
+    state: started
+    hostname: "{{ wordpress_fqdn }}" 
+    ports:
+      - "{{ wordpress_port_http }}:80"
+
+- name: Creation du volume de fichers de la db de wordpress 
+  containers.podman.podman_volume:
+    name: "{{ pod_wordpress }}_vol_db"
+    state: present
+
+- name: Creation du volume de themes de wordpress
+  containers.podman.podman_volume:
+    name: "{{ pod_wordpress }}_vol_themes"
+    state: present
+
+- name: Creation du volume de plugins de wordpress
+  containers.podman.podman_volume:
+    name: "{{ pod_wordpress }}_vol_plugins"
+    state: present

@@ -1,3 +1,5 @@
+#before any other action, consider the following tasks
+
 #Configure vim for yml
 echo "set bg=dark
 autocmd FileType yaml setlocal ai et ts=2 sw=3 cuc cul">~/.vimrc

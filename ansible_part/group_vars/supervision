@@ -1,0 +1,13 @@
+#ELK vars
+pod_ELK: elastic-01
+ELK_image_elastisearch: 'docker.io/library/elasticsearch:7.10.1'
+ELK_image_kibana: 'docker.io/library/kibana:7.10.1'
+ELK_port_5601: 5601
+ELK_port_9200: 9200
+ELK_port_9300: 9300
+ELK_CPU_elastic: '0.3'
+ELK_CPU_kibana: '0.3'
+
+
+ELK_fqdn: 'elk.exemple.local'
+

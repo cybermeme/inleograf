@@ -1,0 +1,9 @@
+---
+- name: enable_haproxy
+  systemd:
+    name: "{{ service_haproxy }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+# handlers file for installServeurBase

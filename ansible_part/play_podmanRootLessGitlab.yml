@@ -1,0 +1,8 @@
+---
+- name: Mise en place des pods et Containers pour Nextcloud
+  hosts: scm
+  gather_facts: false
+  become: false
+  remote_user: "{{ user_rootless }}"
+  roles:
+    - podmanContainerGitlab

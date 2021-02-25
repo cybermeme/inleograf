@@ -1,0 +1,10 @@
+#Gitlab vars
+gitlab_images_vers: 'gitlab/gitlab-ce:latest'
+gitlab_tag_id: gitlab-01
+gitlab_port_http: 10186
+gitlab_port_https: 10187
+gitlab_port_ssh: 10188
+gitlab_CPU: '0.3'
+
+
+gitlab_fqdn: 'gitlab.exemple.local'

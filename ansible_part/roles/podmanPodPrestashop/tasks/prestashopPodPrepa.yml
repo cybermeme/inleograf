@@ -1,0 +1,18 @@
+---
+- name: Creation du pod du service prestashop
+  containers.podman.podman_pod:
+    name: "{{ pod_prestashop }}"
+    state: started
+    hostname: "{{ prestashop_fqdn }}" 
+    ports:
+      - "{{ prestashop_port_http }}:80"
+
+- name: Creation du volume de fichers de la db de prestashop 
+  containers.podman.podman_volume:
+    name: "{{ pod_prestashop }}_vol_db"
+    state: present
+
+- name: Creation du volume de fichers de l'app de prestashop
+  containers.podman.podman_volume:
+    name: "{{ pod_prestashop }}_vol_app"
+    state: present

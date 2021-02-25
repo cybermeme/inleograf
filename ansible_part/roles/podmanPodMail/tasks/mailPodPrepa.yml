@@ -1,0 +1,44 @@
+---
+- name: Creation du pod des services mails
+  containers.podman.podman_pod:
+    name: "{{ pod_mail }}"
+    state: started
+    hostname: "{{ mails_fqdn }}" 
+    ports:
+      - "{{ mails_port_smtp }}:25"
+      - "{{ mails_port_submission }}:587"
+      - "{{ mails_port_imaps }}:993"
+      - "{{ mails_port_pop3s }}:995"
+      - "{{ mails_port_sieve }}:4190"
+
+- name: Creation du volume de fichers de config pour postfix
+  containers.podman.podman_volume:
+    name: "{{ pod_mail }}_postfix_etc_postfix"
+    state: present
+
+- name: Creation du volume du spool des mails
+  containers.podman.podman_volume: 
+    name: "{{ pod_mail }}_postfix_vars_pool_mail"
+    state: present
+
+- name: Creation du volume de fichiers de config pour dovecot
+  containers.podman.podman_volume:
+    name: "{{ pod_mail }}_dovecot_etc_dovecot"
+    state: present
+
+- name: Creation du volume pour opendkim
+  containers.podman.podman_volume:
+    name: "{{ pod_mail }}_vol_dkim"
+    state: present
+
+- name: Creation du volume pour mariadb
+  containers.podman.podman_volume:
+    name: "{{ pod_mail }}_vol_db"
+    state: present
+
+- name: Creation du volume de stockage des mails
+  containers.podman.podman_volume:
+    name: "{{ pod_mail }}_vol_mails"
+    state: present
+    
+# voir pour creer dynamiquement un volume par nom de domaine ou par user ? risque de perte de visibilité ?

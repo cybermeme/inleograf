@@ -1,0 +1,15 @@
+---
+- name: Creation du pod du service ELK
+  containers.podman.podman_pod:
+    name: "{{ pod_ELK }}"
+    state: started
+    hostname: "{{ ELK_fqdn }}" 
+    ports:
+      - "{{ ELK_port_5601 }}:5601"
+      - "{{ ELK_port_9200 }}:9200"
+      - "{{ ELK_port_9300 }}:9300"
+
+- name: Creation du volume de fichers de ELK
+  containers.podman.podman_volume:
+    name: "{{ pod_ELK }}_vol_data"
+    state: present

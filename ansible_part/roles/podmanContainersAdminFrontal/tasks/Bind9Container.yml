@@ -1,0 +1,19 @@
+---
+- name: Mise en place d'un serveur DNS Bind9
+  containers.podman.podman_container:
+    name: bind9
+    image: "{{ bind_image }}"
+    cpus: "{{ bind_CPU }}"
+    state: started
+    # privileged: true
+    publish:
+      - "{{ bind_port_dns }}:53"
+      - "{{ bind_port_rndc }}:953"
+    volume:
+      - Bind9_etc:/etc/bind
+      - Bind9_var_cache_lib:/var/cache/bind
+      - Bind9_var_lib_bin:/var/lib/bind
+      - Bind9_var_log:/var/log
+
+#https://hub.docker.com/_/bind9/plans/3af94cc6-b9c6-43c2-8658-e617ef977949?tab=instructions
+

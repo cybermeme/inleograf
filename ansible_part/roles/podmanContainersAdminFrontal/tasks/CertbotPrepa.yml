@@ -1,0 +1,7 @@
+---
+- name: Creation des Volumes pour stocker les certificats Letsencrypt
+  containers.podman.podman_volume:
+    name: "{{ item }}"
+  loop:
+    - certbot_vol_etc_Letsencrypt
+    - certbot_vol_var_lib_Letsencrypt

@@ -1,0 +1,15 @@
+pod_prestashop: prestashop-01
+prestashop_db_image: 'docker.io/library/mariadb:10'
+prestashop_web_image: 'docker.io/prestashop/prestashop:1.7'
+prestashop_port_http: 10182
+prestashop_dbname: prestashop
+prestashop_CPU_db: '0.3'
+prestashop_CPU_web: '0.3'
+
+
+
+prestashop_fqdn: 'prestashop.exemple.local'
+prestashop_dbuser: prestauser
+prestashop_dbpassw: prestapass
+prestashop_admin_login: 'admin@exemple.local'
+prestashop_adminpasswd: superpassword

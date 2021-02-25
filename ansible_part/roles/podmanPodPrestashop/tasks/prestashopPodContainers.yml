@@ -1,0 +1,40 @@
+---
+- name: deployement de mariadb
+  containers.podman.podman_container:
+    name: mariadb_{{pod_prestashop}}
+    state: started
+    pod: "{{ pod_prestashop }}"
+    image: "{{ prestashop_db_image }}"
+    cpus: "{{ prestashop_CPU_db }}"
+    volume: "{{ pod_prestashop }}_vol_db:/var/lib/mysql"
+    env:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: "{{ prestashop_dbname }}"
+      MYSQL_USER: "{{ prestashop_dbuser }}"
+      MYSQL_PASSWORD: "{{ prestashop_dbpassw }}"
+
+- name: deployment de prestashop
+  containers.podman.podman_container:
+    name: prestashop_{{pod_prestashop}}
+    state: started
+    pod: "{{ pod_prestashop }}"
+    image: "{{ prestashop_web_image }}"
+    cpus: "{{ prestashop_CPU_web }}"
+    volume:
+      - "{{ pod_prestashop }}_vol_app:/var/www/html"
+    env:
+      DB_SERVER: "{{ prestashop_fqdn }}"
+      DB_NAME: "{{ prestashop_dbname }}"
+      DB_USER: "{{ prestashop_dbuser }}"
+      DB_PASSWD: "{{ prestashop_dbpassw }}"
+      ADMIN_MAIL: "{{ prestashop_admin_login }}"
+      ADMIN_PASSWD: "{{ prestashop_adminpasswd }}"
+      PS_INSTALL_AUTO: 1
+      PS_DOMAIN: "{{ prestashop_fqdn }}"
+  notify:
+    - creation_systemd_pod_prestashop
+    - rechargement_systemd
+    - persistance_pod_pod_prestashop
+
+# https://hub.docker.com/_/mariadb
+# https://hub.docker.com/r/prestashop/prestashop

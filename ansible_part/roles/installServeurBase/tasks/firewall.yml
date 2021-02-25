@@ -1,0 +1,36 @@
+---
+- name: Activation du Firewall firewalld
+  systemd:
+    name: firewalld.service
+    enabled: true
+    state: started
+  when: ansible_os_family == 'RedHat'
+
+- name: ouverture des ports du firewall pour les mails et certificats
+  firewalld:
+    service: "{{ item }}"
+    permanent: true
+    immediate: true
+    state: enabled
+  loop:
+      # ports pour services email
+      - smtp
+      - smtp-submission
+      - pop3s
+      - imaps
+      - managesieve
+      # ports pour Web
+      - http
+      - https
+      # ports pour le DNS
+      - dns
+  when: ansible_os_family == 'RedHat'
+
+- name: retrait des ports du firewall mis par defaut que nous n'utilisons pas
+  firewalld:
+    service: cockpit
+    permanent: true
+    immediate: true
+    state: disabled
+  when: ansible_os_family == 'RedHat'
+

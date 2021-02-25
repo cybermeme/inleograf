@@ -1,0 +1,4 @@
+---
+- include_tasks: prestashopPodPrepa.yml
+- include_tasks: prestashopPodContainers.yml
+# tasks file for podmanPodNextCloud

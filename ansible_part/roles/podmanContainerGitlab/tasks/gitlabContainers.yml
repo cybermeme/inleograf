@@ -1,0 +1,21 @@
+---
+- name: deployment de gitlab
+  containers.podman.podman_container:
+    name: "{{gitlab_tag_id}}"
+    state: started
+    image: "{{ gitlab_images_vers }}"
+    cpus: "{{ gitlab_CPU }}"
+    hostname: "{{ gitlab_fqdn }}"
+    publish:
+      - "{{ gitlab_port_ssh }}:22"
+      - "{{ gitlab_port_http }}:80"
+      - "{{ gitlab_port_https }}:443"
+    volume:
+      - "{{ gitlab_tag_id }}_vol_etc:/etc/gitlab"
+      - "{{ gitlab_tag_id }}_vol_data:/var/opt/gitlab"
+      - "{{ gitlab_tag_id }}_vol_log:/var/log/gitlab"
+  notify:
+    - creation_systemd_gitlab_tag_id
+    - rechargement_systemd
+    - persistance_gitlab_tag_id
+

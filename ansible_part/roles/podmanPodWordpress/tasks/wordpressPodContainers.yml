@@ -1,0 +1,37 @@
+---
+- name: deployement de mariadb
+  containers.podman.podman_container:
+    name: mariadb_{{pod_wordpress}}
+    state: started
+    pod: "{{ pod_wordpress }}"
+    image: "{{ wordpress_db_image }}"
+    cpus: "{{ wordpress_CPU_db }}"
+    volume: "{{ pod_wordpress }}_vol_db:/var/lib/mysql"
+    env:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: "{{ wordpress_dbname }}"
+      MYSQL_USER: "{{ wordpress_dbuser }}"
+      MYSQL_PASSWORD: "{{ wordpress_dbpassw }}"
+
+- name: deployment de wordpress
+  containers.podman.podman_container:
+    name: wordpress_{{pod_wordpress}}
+    state: started
+    pod: "{{ pod_wordpress }}"
+    image: "{{ wordpress_web_image }}"
+    cpus: "{{ wordpress_CPU_web }}"
+    volume:
+      - "{{ pod_wordpress }}_vol_themes:/var/www/html/wp-content/themes/"
+      - "{{ pod_wordpress }}_vol_pugins:/var/www/html/wp-content/plugins/"
+    env:
+      WORDPRESS_DB_HOST: "{{ wordpress_fqdn }}"
+      WORDPRESS_DB_NAME: "{{ wordpress_dbname }}"
+      WORDPRESS_DB_USER: "{{ wordpress_dbuser }}"
+      WORDPRESS_DB_PASSWORD: "{{ wordpress_dbpassw }}"
+  notify:
+    - creation_systemd_pod_wordpress
+ #   - rechargement_systemd
+    - persistance_pod_pod_wordpress
+
+# https://hub.docker.com/_/mariadb
+# https://hub.docker.com/_/wordpress

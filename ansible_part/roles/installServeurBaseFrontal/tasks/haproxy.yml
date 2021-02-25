@@ -1,0 +1,25 @@
+---
+- name: Instalation du repo EPEL
+  package:
+    name: epel-release
+    state: latest
+
+- name: Installation de haproxy
+  package:
+    name: haproxy
+    state: latest
+
+- name: Authorisation de haproxy pour selinux
+  ansible.posix.seboolean:
+    name: haproxy_connect_any
+    state: true
+    persistent: true
+
+- name: copie du fichier de configuration
+  template:
+    src: "/{{ role_path }}/templates/haproxy.cfg"
+    dest: /etc/haproxy/haproxy.cfg
+  #validate: /usr/sbin/haproxy -c -f %s
+  notify: enable_haproxy
+
+#https://docs.ansible.com/ansible/latest/collections/community/general/haproxy_module.html

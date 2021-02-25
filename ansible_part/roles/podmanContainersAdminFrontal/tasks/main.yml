@@ -1,0 +1,6 @@
+---
+- include_tasks: Bind9Prepa.yml
+- include_tasks: Bind9Container.yml
+- include_tasks: CertbotPrepa.yml
+- include_tasks: CertbotContainer.yml
+# tasks file for roles/podmanContainersAdminFixe

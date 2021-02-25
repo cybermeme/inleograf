@@ -1,0 +1,6 @@
+---
+- name: Installation des logiciels de base
+  hosts: allServers
+  become: true
+  roles:
+    - installServeurBase

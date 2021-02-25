@@ -1,0 +1,15 @@
+---
+- name: Creation du volume de fichers de config pour gitlab
+  containers.podman.podman_volume:
+    name: "{{ gitlab_tag_id }}_vol_etc"
+    state: present
+
+- name: Creation du volume de fichers de log de gitlab
+  containers.podman.podman_volume:
+    name: "{{ gitlab_tag_id }}_vol_log"
+    state: present
+
+- name: Creation du volume de fichers des datas dans gitlab
+  containers.podman.podman_volume:
+    name: "{{ gitlab_tag_id }}_vol_data"
+    state: present

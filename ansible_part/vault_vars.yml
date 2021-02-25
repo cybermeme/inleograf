@@ -1,0 +1,44 @@
+#will be an ansible vault using:
+# ansible-vault create vault_vars.yml
+# and remove from group vars
+# Under construction
+user_admin: useradmin
+user_rootless: userpodman
+base_user: user
+
+frontal_domain: 'exemple.local'
+frontal_ip: '192.168.122.119'
+frontal_ip_rev: '122.168.192'
+
+
+nextcloud_fqdn: 'nextcloud.exemple.local'
+nextcloud_dbuser: nextcloud
+nextcloud_dbpassw: nextcloudpwd
+nextcloud_adminuser: superadmin
+nextcloud_adminpasswd: superpassword
+
+
+prestashop_fqdn: 'prestashop.exemple.local'
+prestashop_dbuser: prestauser
+prestashop_dbpassw: prestapass
+prestashop_admin_login: 'admin@exemple.local'
+prestashop_adminpasswd: superpassword
+
+
+wordpress_fqdn: 'wordpress.exemple.local'
+wordpress_dbuser: wpdbuser
+wordpress_dbpassw: wpdbpass
+wordpress_admin_login: superadmin
+wordpress_adminpasswd: superpassword
+
+
+gitlab_fqdn: 'gitlab.exemple.local'
+
+
+ELK_fqdn: 'elk.exemple.local'
+
+
+mails_fqdn: 'exemple.local'
+mails_db_user: usermaildb
+mails_db_passwd: 'superpassword'
+mails_db_name: "mailserver"
