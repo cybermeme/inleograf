@@ -22,7 +22,7 @@
     cpus: "{{ wordpress_CPU_web }}"
     volume:
       - "{{ pod_wordpress }}_vol_themes:/var/www/html/wp-content/themes/"
-      - "{{ pod_wordpress }}_vol_pugins:/var/www/html/wp-content/plugins/"
+      - "{{ pod_wordpress }}_vol_plugins:/var/www/html/wp-content/plugins/"
     env:
       WORDPRESS_DB_HOST: "{{ wordpress_fqdn }}"
       WORDPRESS_DB_NAME: "{{ wordpress_dbname }}"
