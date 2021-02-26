@@ -5,14 +5,14 @@
     state: started
     image: "{{ haproxy_image }}"
     cpus: "{{ haproxy_CPU }}"
-    expose:
-      - "25"
-      - "80"
-      - "443"
-      - "587"
-      - "993"
-      - "995"
-      - "4190"
+    publish:
+      - "25:25"
+      - "80:80"
+      - "443:443"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+      - "4190:4190"
     volume:
       - 'haproxy_etc:/usr/local/etc/haproxy/'
       - 'haproxy_stats:/var/lib/haproxy/'

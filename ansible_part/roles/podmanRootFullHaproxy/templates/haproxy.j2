@@ -25,7 +25,7 @@ global
     #
     #    local2.*                       /var/log/haproxy.log
     #
-    log         127.0.0.1 local2
+    log         {{ frontal_ip }} local2
 
     chroot      /var/lib/haproxy
     pidfile     /var/run/haproxy.pid
@@ -69,45 +69,7 @@ defaults
     timeout check           10s
     maxconn                 3000
 
-#---------------------------------------------------------------------
-# frontend Bind9
-#---------------------------------------------------------------------
 
-#frontend ft_bind_tcp
-#    bind *:53
-#     mode tcp
-#    default_backend bk_bind_tcp
-
-#frontend ft_bind_udp
-#    bind *:53
-#    default_backend bk_bind_udp
-
-#frontend ft_bind_rndc_tcp
-#    bind *:953
-#     mode tcp
-#    default_backend bk_bind_rndc_tcp
-
-#frontend ft_bind_rndc_udp
-#    bind *:953
-#    default_backend bk_bind_rndc_udp
-
-#---------------------------------------------------------------------
-# Backends Bind9
-#---------------------------------------------------------------------
-
-#backend bk_bind_tcp
-#     mode tcp
-#     server bind9 127.0.0.1:"{{ bind_port_dns }}"
-
-#backend bk_bind_udp
-#     server bind9 127.0.0.1:"{{ bind_port_dns }}"
-
-#backend bk_bind_rndc_tcp
-#     mode tcp
-#     server bind9 127.0.0.1:"{{ bind_port_rndc }}"
-
-#backend bk_bind_rndc_udp
-#     server bind9 127.0.0.1:"{{ bind_port_rndc }}"
      
 #---------------------------------------------------------------------
 # frontend Dovecot
@@ -128,7 +90,7 @@ backend bk_imap
    # balance leastconn
    # stick store-request src
    # stick-table type ip size 200k expire 30m
-    server podmail 127.0.0.1:10093 send-proxy-v2
+    server podmail {{ frontal_ip }}:10093 send-proxy-v2
 
 
 #-----------------
@@ -140,11 +102,11 @@ frontend ft_web
     mode http
     default_backend bk_web
 
-acl elk_http hdr_dom(host) -i "{{ ELK_fqdn }}"
-acl git_http hdr_dom(host) -i "{{ gitlab_fqdn }}"
-acl nextcloud_http hdr_dom(host) -i "{{ nextcloud_fqdn }}"
-acl prestashop_http hdr_dom(host) -i "{{ prestashop_fqdn }}"
-acl wordpress_http hdr_dom(host) -i "{{ wordpress_fqdn }}"
+acl elk_http hdr(host) -i {{ ELK_fqdn }}
+acl git_http hdr(host) -i {{ gitlab_fqdn }}
+acl nextcloud_http hdr(host) -i {{ nextcloud_fqdn }}
+acl prestashop_http hdr(host) -i {{ prestashop_fqdn }}
+acl wordpress_http hdr(host) -i {{ wordpress_fqdn }}
 
 use_backend bk_elk if elk_http
 use_backend bk_gitlab if git_http
@@ -160,11 +122,11 @@ use_backend bk_wordpress if wordpress_http
 frontend ft_webs
     bind *:443 ssl crt /etc/certs/haproxy.pem #crt /certs/cert2.pem crt /certs/cert3.pem #a faire total#
     mode http
-    use_backend bk_elk if { ssl_fc_sni "{{ ELK_fqdn }}" }
-    use_backend bk_gitlab if { ssl_fc_sni "{{ gitlab_fqdn }}" }
-    use_backend bk_nextcloud if { ssl_fc_sni "{{ nextcloud_fqdn }}" }
-    use_backend bk_prestashop if { ssl_fc_sni "{{ prestashop_fqdn }}" }
-    use_backend bk_wordpress if { ssl_fc_sni "{{ wordpress_fqdn }}" }
+    use_backend bk_elk if { ssl_fc_sni {{ ELK_fqdn }} }
+    use_backend bk_gitlab if { ssl_fc_sni {{ gitlab_fqdn }} }
+    use_backend bk_nextcloud if { ssl_fc_sni {{ nextcloud_fqdn }} }
+    use_backend bk_prestashop if { ssl_fc_sni {{ prestashop_fqdn }} }
+    use_backend bk_wordpress if { ssl_fc_sni {{ wordpress_fqdn }} }
     default_backend bk_web
 
 
@@ -174,7 +136,7 @@ frontend ft_webs
 
 backend bk_web
     mode http
-    server wordp1 127.0.0.1:"{{ wordpress_port_http }}"
+    server wordp1 {{ frontal_ip }}:{{ wordpress_port_http }}
 
 
 #---------------
@@ -183,7 +145,7 @@ backend bk_web
 
 backend bk_elk
     mode http
-    server elk1 127.0.0.1:"{{ ELK_port_9200 }}"
+    server elk1 {{ frontal_ip }}:{{ ELK_port_9200 }}
 
 
 #---------------
@@ -192,7 +154,7 @@ backend bk_elk
 
 backend bk_gitlab
     mode http
-    server gitl1 127.0.0.1:"{{ gitlab_port_https }}" 
+    server gitl1 {{ frontal_ip }}:{{ gitlab_port_https }} 
 
 
 #---------------
@@ -201,7 +163,7 @@ backend bk_gitlab
 
 backend bk_nextcloud
     mode http
-    server nxt1 127.0.0.1:"{{ nextcloud_port_http }}"
+    server nxt1 {{ frontal_ip }}:{{ nextcloud_port_http }}
 
 
 #---------------
@@ -210,7 +172,7 @@ backend bk_nextcloud
 
 backend bk_prestashop
     mode http
-    server prest1 127.0.0.1:"{{ prestashop_port_http }}"
+    server prest1 {{ frontal_ip }}:{{ prestashop_port_http }}
 
 
 #---------------
@@ -219,4 +181,4 @@ backend bk_prestashop
 
 backend bk_wordpress
     mode http
-    server wordp1 127.0.0.1:"{{ wordpress_port_http }}"
+    server wordp1 {{ frontal_ip }}:{{ wordpress_port_http }}
