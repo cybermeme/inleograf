@@ -1,0 +1,63 @@
+---
+- name: Creation des volumes pour les fichiers de zones et de configuration DNS
+  containers.podman.podman_volume:
+    name: "{{ item }}"
+  loop:
+    - Bind9_etc
+    - Bind9_var_cache_lib
+    - Bind9_var_lib_bin
+    - Bind9_var_log
+
+
+- name: copie du fichier de configuration en temporaire
+  template:
+    src: "{{ role_path }}/templates/bind/named.conf.j2"
+    dest: '/tmp/named.conf'
+
+- name: copie du fichier de zone en temporaire
+  template:
+    src: "{{ role_path }}/templates/bind/db.exemple.local.j2"
+    dest: '/tmp/db.exemple.local'
+
+- name: copie du fichier de zone inverse en temporaire
+  template:
+    src: "{{ role_path }}/templates/bind/db.exemple.local.reverse.j2"
+    dest: '/tmp/db.exemple.local.reverse'
+
+- name: Creation du fichier de logs bind9
+  file:
+    path: '/var/lib/containers/storage/volumes/Bind9_var_log/_data/querylog'
+    state: touch
+    owner: 'root'
+    group: '106'
+    mode: '660'
+
+
+- name: copie du fichier de conf dans le volume
+  command:
+    cmd: "cp /tmp/named.conf /var/lib/containers/storage/volumes/Bind9_etc/_data"
+
+- name: copie du fichier de zone dans le volume
+  command:
+    cmd: "cp /tmp/db.exemple.local /var/lib/containers/storage/volumes/Bind9_var_lib_bin/_data"
+
+- name: copie du fichier de zone inverse dans le volume
+  command:
+    cmd: "cp /tmp/db.exemple.local.reverse /var/lib/containers/storage/volumes/Bind9_var_lib_bin/_data"
+
+
+
+- name: suppression du fichier de conf temporaire
+  file:
+    path: '/tmp/named.conf'
+    state: absent
+    
+- name: suppression des fichiers db temporaire
+  file:
+    path: '/tmp/db.*'
+    state: absent
+     
+- name: suppression du fichier de log temporaire
+  file:
+    path: '/tmp/querylog'
+    state: absent

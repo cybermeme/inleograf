@@ -11,7 +11,7 @@
 #  import_playbook: play_createUser.yml
 
 - name: Phase 2 
-  import_playbook: play_installBase.yml
+  import_playbook: podmanRootFullBind.yml
 
 - name: Phase 3 
   import_playbook: play_podmanRootFullHaproxy.yml

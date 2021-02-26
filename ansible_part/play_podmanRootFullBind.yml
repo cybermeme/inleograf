@@ -5,4 +5,4 @@
   become: true
   remote_user: "{{ user_admin }}"
   roles:
-    - podmanContainerBindFrontal
+    - podmanRootFullBind
