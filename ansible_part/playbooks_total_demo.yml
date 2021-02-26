@@ -14,10 +14,10 @@
   import_playbook: play_installBase.yml
 
 - name: Phase 3 
-  import_playbook: play_installBaseFrontal.yml
+  import_playbook: play_podmanRootFullHaproxy.yml
 
 #- name: Phase 4 
-#  import_playbook: play_podmanRootLessFrontal.yml
+#  import_playbook: play_podmanRootFullBind.yml 
 
 - name: Phase 5
   import_playbook: play_podmanRootLessGitlab.yml

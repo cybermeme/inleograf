@@ -1,0 +1,6 @@
+---
+- include_tasks: CertbotPrepa.yml
+- include_tasks: CertbotContainer.yml
+- include_tasks: haproxyPrepa.yml
+- include_tasks: haproxyContainer.yml
+

@@ -42,3 +42,4 @@ mails_fqdn: 'exemple.local'
 mails_db_user: usermaildb
 mails_db_passwd: 'superpassword'
 mails_db_name: "mailserver"
+

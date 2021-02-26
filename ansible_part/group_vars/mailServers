@@ -14,7 +14,11 @@ mails_CPU_dkim: '0.1'
 mails_CPU_dovecot: '0.3'
 
 
+
 mails_fqdn: 'exemple.local'
+mails_serv_name: 'cthulhu'
 mails_db_user: usermaildb
 mails_db_passwd: 'superpassword'
 mails_db_name: "mailserver"
+mails_cert_loc_crt: '/etc/ssl/mailCert/{{ mails_serv_name }}-fullchain.pem'
+mails_cert_loc_key: '/etc/ssl/mailCert/private/{{ mails_serv_name }}.key'

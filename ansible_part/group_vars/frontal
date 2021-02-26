@@ -16,6 +16,11 @@ frontal_ip: '192.168.122.119'
 frontal_ip_rev: '122.168.192'
 
 
+haproxy_uid: '01'
+haproxy_image: 'docker.io/library/haproxy'
+haproxy_CPU: '0.3'
+
+
 user_admin: useradmin
 user_rootless: userpodman
 base_user: user

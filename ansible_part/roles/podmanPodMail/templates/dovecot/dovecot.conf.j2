@@ -1,0 +1,84 @@
+## You should mount /etc/dovecot if you want to
+## manage this file
+
+#mail_home=/srv/mail/%Lu
+#mail_location=sdbox:~/Mail
+mail_location = maildir:/srv/mail/%d/%n/
+
+mail_uid=1000
+mail_gid=1000
+
+protocols = imap pop3 sieve lmtp
+
+first_valid_uid = 1000
+last_valid_uid = 1000
+
+passdb {
+  driver = static
+  args = password=pass
+}
+
+ssl=yes
+ssl_cert=<{{ mails_cert_loc_crt }}
+ssl_key=<{{ mails_cert_loc_key }}
+
+namespace {
+  inbox = yes
+  separator = /
+}
+
+service lmtp {
+  inet_listener {
+    port = 24
+  }
+}
+
+listen = *
+
+log_path=/dev/stdout
+info_log_path=/dev/stdout
+debug_log_path=/dev/stdout
+
+
+postmaster_address=postmaster at {{ mails_fqdn }}
+
+disable_plaintext_auth = yes
+auth_mechanisms = plain login
+
+passdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf.ext
+}
+
+userdb {
+  driver = static
+  args = uid=vmail gid=vmail home=/var/mail/vhosts/%d/%n
+}
+
+driver = mysql
+
+connect = host=127.0.0.1 dbname={{ mails_db_name }} user={{ mails_db_user }} password={{ mails_db_passwd }}
+default_pass_scheme = SHA512-CRYPT
+password_query = SELECT email as user, password FROM virtual_users WHERE email='%u';
+
+service lmtp {
+  unix_listener /var/spool/postfix/private/dovecot-lmtp {
+    #mode = 0666i
+    mode = 0600
+    user = postfix
+    group = postfix
+  }
+
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
+
+  unix_listener auth-userdb {
+    mode = 0600
+    user = vmail
+  }
+
+

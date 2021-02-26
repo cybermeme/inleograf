@@ -1,0 +1,5 @@
+thoses certificates are selfsigned certificate for POC
+NEVER use them in production, regenerate your own
+or use certbot as it should be!!!
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+

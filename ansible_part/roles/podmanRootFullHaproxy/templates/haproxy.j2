@@ -37,9 +37,15 @@ global
     # turn on stats unix socket
     stats socket /var/lib/haproxy/stats
 
-    # utilize system-wide crypto-policies
-    ssl-default-bind-ciphers PROFILE=SYSTEM
-    ssl-default-server-ciphers PROFILE=SYSTEM
+    # system-wide crypto-policies
+    ssl-default-bind-options no-sslv3
+
+    #because of self-signed certs
+    ssl-server-verify none
+
+
+    ssl-default-bind-ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK
+
 
 #---------------------------------------------------------------------
 # common defaults that all the 'listen' and 'backend' sections will
@@ -67,48 +73,48 @@ defaults
 # frontend Bind9
 #---------------------------------------------------------------------
 
-frontend ft_bind_tcp
-    bind *:53
-     mode tcp
-    default_backend bk_bind_tcp
+#frontend ft_bind_tcp
+#    bind *:53
+#     mode tcp
+#    default_backend bk_bind_tcp
 
-frontend ft_bind_udp
-    bind *:53
-    default_backend bk_bind_udp
+#frontend ft_bind_udp
+#    bind *:53
+#    default_backend bk_bind_udp
 
-frontend ft_bind_rndc_tcp
-    bind *:953
-     mode tcp
-    default_backend bk_bind_rndc_tcp
+#frontend ft_bind_rndc_tcp
+#    bind *:953
+#     mode tcp
+#    default_backend bk_bind_rndc_tcp
 
-frontend ft_bind_rndc_udp
-    bind *:953
-    default_backend bk_bind_rndc_udp
+#frontend ft_bind_rndc_udp
+#    bind *:953
+#    default_backend bk_bind_rndc_udp
 
 #---------------------------------------------------------------------
 # Backends Bind9
 #---------------------------------------------------------------------
 
-backend bk_bind_tcp
-     mode tcp
-     server bind9 127.0.0.1:"{{ bind_port_dns }}"
+#backend bk_bind_tcp
+#     mode tcp
+#     server bind9 127.0.0.1:"{{ bind_port_dns }}"
 
-backend bk_bind_udp
-     server bind9 127.0.0.1:"{{ bind_port_dns }}"
+#backend bk_bind_udp
+#     server bind9 127.0.0.1:"{{ bind_port_dns }}"
 
-backend bk_bind_rndc_tcp
-     mode tcp
-     server bind9 127.0.0.1:"{{ bind_port_rndc }}"
+#backend bk_bind_rndc_tcp
+#     mode tcp
+#     server bind9 127.0.0.1:"{{ bind_port_rndc }}"
 
-backend bk_bind_rndc_udp
-     server bind9 127.0.0.1:"{{ bind_port_rndc }}"
+#backend bk_bind_rndc_udp
+#     server bind9 127.0.0.1:"{{ bind_port_rndc }}"
      
 #---------------------------------------------------------------------
 # frontend Dovecot
 #---------------------------------------------------------------------
 
 frontend ft_imap
-    bind *:993 # ssl crt /etc/ssl/private/certprivkey.pem no-sslv3
+    bind *:993 ssl crt /etc/certs/haproxy.pem 
     mode tcp
     default_backend bk_imap
 
@@ -152,7 +158,7 @@ use_backend bk_wordpress if wordpress_http
 #----------------
 
 frontend ft_webs
-    bind *:443 # ssl crt /certs/cert1.pem crt /certs/cert2.pem crt /certs/cert3.pem #a faire total#
+    bind *:443 ssl crt /etc/certs/haproxy.pem #crt /certs/cert2.pem crt /certs/cert3.pem #a faire total#
     mode http
     use_backend bk_elk if { ssl_fc_sni "{{ ELK_fqdn }}" }
     use_backend bk_gitlab if { ssl_fc_sni "{{ gitlab_fqdn }}" }
@@ -186,7 +192,7 @@ backend bk_elk
 
 backend bk_gitlab
     mode http
-    server gitl1 127.0.0.1:"{{ gitlab_port_https }}" check ssl verify none
+    server gitl1 127.0.0.1:"{{ gitlab_port_https }}" 
 
 
 #---------------

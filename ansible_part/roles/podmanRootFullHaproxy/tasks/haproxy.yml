@@ -17,7 +17,7 @@
 
 - name: copie du fichier de configuration
   template:
-    src: "/{{ role_path }}/templates/haproxy.cfg"
+    src: "/{{ role_path }}/templates/haproxy.j2"
     dest: /etc/haproxy/haproxy.cfg
   #validate: /usr/sbin/haproxy -c -f %s
   notify: enable_haproxy

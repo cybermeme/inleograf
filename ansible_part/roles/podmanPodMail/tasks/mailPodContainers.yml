@@ -10,6 +10,7 @@
       - "{{ pod_mail }}_postfix_etc_postfix:/etc/postfix/"
       - "{{ pod_mail }}_postfix_vars_pool_mail:/var/spool/postfix/"
       - "{{ pod_mail }}_vol_mails:/srv/mail/"
+      - "certbot_vol_etc_Letsencrypt:/etc/mailcert"
 
 - name: Mise en place du container mariadb dans le pod
   containers.podman.podman_container:
@@ -45,6 +46,7 @@
     volume: 
       - "{{ pod_mail }}_dovecot_etc_dovecot:/etc/dovecot/"
       - "{{ pod_mail }}_vol_mails:/srv/mail/"
+      - "certbot_vol_etc_Letsencrypt:/etc/mailcert"
   notify: 
     - creation_systemd_{{ pod_mail }}
    # - rechargement_systemd

@@ -2,7 +2,7 @@
 - name: Mise en place des Containers dedies a l'amdinistration
   hosts: frontal
   gather_facts: false
-  become: false
-  remote_user: "{{ user_rootless }}"
+  become: true
+  remote_user: "{{ user_admin }}"
   roles:
-    - podmanContainersAdminFrontal
+    - podmanContainerBindFrontal
