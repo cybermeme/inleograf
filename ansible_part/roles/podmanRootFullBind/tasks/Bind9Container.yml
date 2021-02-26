@@ -7,8 +7,8 @@
     state: started
     # privileged: true
     publish:
-      - "{{ bind_port_dns }}:53"
-      - "{{ bind_port_rndc }}:953"
+      - "53:53"
+      - "953:953"
     volume:
       - Bind9_etc:/etc/bind
       - Bind9_var_cache_lib:/var/cache/bind
