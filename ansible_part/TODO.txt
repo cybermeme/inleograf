@@ -2,10 +2,6 @@ faire les templates des fichiers de config du pod email
 
 appliquer changed_when sur les playbooks avec des containers pour mettre en place de l'idempotence
 
-problème de mise en place des templates de bind9, voir pour une autre solution
-
-mettre en place un ha-proxy par serveur
-
 mettre en place le chargement des variables sensibles stoquées dans un ansible-vault
 
 fusionner playbook_createUser_todofirst.yml et playbooks_total_demo.yml
