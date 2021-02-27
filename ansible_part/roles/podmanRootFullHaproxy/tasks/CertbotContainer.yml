@@ -1,7 +1,12 @@
 ---
+- name: recheche de l etat du container certbot
+  containers.podman.podman_container_info:
+    name: 'Certbot'
+  register: 'db_info'
+
 - name: Installation de Certbot
   containers.podman.podman_container:
-    name: Certbot
+    name: 'Certbot'
     image: "{{ certbot_image }}"
     state: started
     cpus: "{{ certbot_CPU }}"
@@ -10,6 +15,8 @@
     volume:
       - certbot_vol_etc_Letsencrypt:/etc/letsencrypt
       - certbot_vol_var_lib_Letsencrypt:/var/lib/letsencrypt
-
+  when: "not db_info.containers"
+  
+  
 #https://certbot.eff.org/docs/install.html#running-with-docker
 #Lancer certbot avec certonly va stoquer les certif dans /etc/letsencrypt/live

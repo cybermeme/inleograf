@@ -1,4 +1,9 @@
 ---
+- name: recheche de l etat du container postfix
+  containers.podman.podman_container_info:
+    name: "elastic-search_{{pod_ELK}}"
+  register: 'db_info'
+
 - name: deployement d'elastic search
   containers.podman.podman_container:
     name: elastic-search_{{pod_ELK}}
@@ -9,6 +14,13 @@
     volume: "{{ pod_ELK }}_vol_data:/usr/share/elasticsearch/data"
     env:
       discovery.type: single-node
+  when: "not db_info.containers"
+
+
+- name: recheche de l etat du container postfix
+  containers.podman.podman_container_info:
+    name: "kibana_{{pod_ELK}}"
+  register: 'db_info'
 
 - name: deployment de kibana
   containers.podman.podman_container:
@@ -22,4 +34,4 @@
   notify:
     - creation_systemd_pod_ELK
     - persistance_pod_pod_ELK
-
+  when: "not db_info.containers"

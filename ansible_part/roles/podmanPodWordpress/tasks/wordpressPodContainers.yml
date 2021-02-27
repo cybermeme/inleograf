@@ -1,7 +1,12 @@
 ---
+- name: recheche de l etat du container mariadb
+  containers.podman.podman_container_info:
+    name: "mariadb_{{pod_wordpress}}"
+  register: 'db_info'
+
 - name: deployement de mariadb
   containers.podman.podman_container:
-    name: mariadb_{{pod_wordpress}}
+    name: "mariadb_{{pod_wordpress}}"
     state: started
     pod: "{{ pod_wordpress }}"
     image: "{{ wordpress_db_image }}"
@@ -12,10 +17,17 @@
       MYSQL_DATABASE: "{{ wordpress_dbname }}"
       MYSQL_USER: "{{ wordpress_dbuser }}"
       MYSQL_PASSWORD: "{{ wordpress_dbpassw }}"
+  when: "not db_info.containers"
+
+
+- name: recheche de l etat du container wordpress
+  containers.podman.podman_container_info:
+    name: "wordpress_{{pod_wordpress}}"
+  register: 'db_info'
 
 - name: deployment de wordpress
   containers.podman.podman_container:
-    name: wordpress_{{pod_wordpress}}
+    name: "wordpress_{{pod_wordpress}}"
     state: started
     pod: "{{ pod_wordpress }}"
     image: "{{ wordpress_web_image }}"
@@ -31,6 +43,7 @@
   notify:
     - creation_systemd_pod_wordpress
     - persistance_pod_pod_wordpress
-
+  when: "not db_info.containers"
+  
 # https://hub.docker.com/_/mariadb
 # https://hub.docker.com/_/wordpress

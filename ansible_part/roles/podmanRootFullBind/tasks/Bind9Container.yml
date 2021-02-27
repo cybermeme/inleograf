@@ -1,7 +1,12 @@
 ---
+- name: recheche de l etat du container Bind9
+  containers.podman.podman_container_info:
+    name: 'bind9'
+  register: 'db_info'
+  
 - name: Mise en place d'un serveur DNS Bind9
   containers.podman.podman_container:
-    name: bind9
+    name: 'bind9'
     image: "{{ bind_image }}"
     cpus: "{{ bind_CPU }}"
     state: started
@@ -17,6 +22,7 @@
   notify:
     - creation_systemd_bind
     - persistance_bind
-
+  when: "not db_info.containers"
+  
 #https://hub.docker.com/_/bind9/plans/3af94cc6-b9c6-43c2-8658-e617ef977949?tab=instructions
 

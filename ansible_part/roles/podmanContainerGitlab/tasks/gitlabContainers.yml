@@ -1,4 +1,10 @@
 ---
+- name: recheche de l etat du container opendkim
+  containers.podman.podman_container_info:
+    name: "{{gitlab_tag_id}}"
+  register: 'db_info'
+
+
 - name: deployment de gitlab
   containers.podman.podman_container:
     name: "{{gitlab_tag_id}}"
@@ -17,4 +23,4 @@
   notify:
     - creation_systemd_gitlab_tag_id
     - persistance_gitlab_tag_id
-
+  when: "not db_info.containers"

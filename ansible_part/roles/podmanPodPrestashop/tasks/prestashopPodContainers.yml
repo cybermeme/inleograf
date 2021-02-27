@@ -1,7 +1,12 @@
 ---
+- name: recheche de l etat du container mariadb
+  containers.podman.podman_container_info:
+    name: "mariadb_{{pod_prestashop}}"
+  register: 'db_info'
+
 - name: deployement de mariadb
   containers.podman.podman_container:
-    name: mariadb_{{pod_prestashop}}
+    name: "mariadb_{{pod_prestashop}}"
     state: started
     pod: "{{ pod_prestashop }}"
     image: "{{ prestashop_db_image }}"
@@ -12,10 +17,17 @@
       MYSQL_DATABASE: "{{ prestashop_dbname }}"
       MYSQL_USER: "{{ prestashop_dbuser }}"
       MYSQL_PASSWORD: "{{ prestashop_dbpassw }}"
+  when: "not db_info.containers"
+  
+
+- name: recheche de l etat du container prestashop
+  containers.podman.podman_container_info:
+    name: "prestashop_{{pod_prestashop}}"
+  register: 'db_info'
 
 - name: deployment de prestashop
   containers.podman.podman_container:
-    name: prestashop_{{pod_prestashop}}
+    name: "prestashop_{{pod_prestashop}}"
     state: started
     pod: "{{ pod_prestashop }}"
     image: "{{ prestashop_web_image }}"
@@ -34,6 +46,8 @@
   notify:
     - creation_systemd_pod_prestashop
     - persistance_pod_pod_prestashop
-
+  when: "not db_info.containers"
+  
+  
 # https://hub.docker.com/_/mariadb
 # https://hub.docker.com/r/prestashop/prestashop

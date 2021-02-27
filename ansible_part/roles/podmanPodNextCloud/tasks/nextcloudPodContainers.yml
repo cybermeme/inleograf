@@ -1,4 +1,9 @@
 ---
+- name: recheche de l etat du container mariadb
+  containers.podman.podman_container_info:
+    name: "mariadb_{{pod_nextcloud}}"
+  register: 'db_info'
+
 - name: deployement de mariadb
   containers.podman.podman_container:
     name: mariadb_{{pod_nextcloud}}
@@ -12,6 +17,13 @@
       MYSQL_DATABASE: "{{ nextcloud_dbname }}"
       MYSQL_USER: "{{ nextcloud_dbuser }}"
       MYSQL_PASSWORD: "{{ nextcloud_dbpassw }}"
+  when: "not db_info.containers"
+
+
+- name: recheche de l etat du container nextcloud
+  containers.podman.podman_container_info:
+    name: "nextcloud_{{pod_nextcloud}}"
+  register: 'db_info'
 
 - name: deployment de nextcloud
   containers.podman.podman_container:
@@ -34,7 +46,8 @@
   notify:
     - creation_systemd_pod_nextcloud
     - persistance_pod_pod_nextcloud
-
+  when: "not db_info.containers"
+  
 # https://fedoramagazine.org/nextcloud-20-on-fedora-linux-with-podman/
 # https://hub.docker.com/_/nextcloud
 # https://hub.docker.com/_/mariadb

@@ -4,20 +4,6 @@
     name: "haproxy_etc"
     state: present
 
-- name: copie du fichier de configuration en temporaire
-  template:
-    src: "/{{ role_path }}/templates/haproxy.j2"
-    dest: '/tmp/haproxy.cfg'
-
-- name: copie du fichier dans le volume
-  command:
-    cmd: "cp /tmp/haproxy.cfg /var/lib/containers/storage/volumes/haproxy_etc/_data"
-
-- name: suppression du fichier temporaire
-  file:
-    path: '/tmp/haproxy.cfg'
-    state: absent
-
 - name: creation du volume du repertoire  var lib
   containers.podman.podman_volume:
     name: "haproxy_stats"

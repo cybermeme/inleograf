@@ -1,7 +1,23 @@
 ---
+- name: recheche de l etat du container haproxy
+  containers.podman.podman_container_info:
+    name: "haproxy_{{haproxy_uid}}"
+  register: 'db_info'
+
+- name: copie du fichier de configuration en temporaire
+  template:
+    src: "/{{ role_path }}/templates/haproxy.j2"
+    dest: '/tmp/haproxy.cfg'
+  when: "not db_info.containers"
+
+- name: copie du fichier dans le volume
+  command:
+    cmd: "mv /tmp/haproxy.cfg /var/lib/containers/storage/volumes/haproxy_etc/_data"
+  when: "not db_info.containers"
+
 - name: haproxy en RootFull
   containers.podman.podman_container:
-    name: haproxy_{{haproxy_uid}}
+    name: "haproxy_{{haproxy_uid}}"
     state: started
     image: "{{ haproxy_image }}"
     cpus: "{{ haproxy_CPU }}"
@@ -20,3 +36,4 @@
   notify:
     - creation_systemd_haproxy
     - persistance_haproxy
+  when: "not db_info.containers"

@@ -1,4 +1,9 @@
 ---
+- name: recheche de l etat du container postfix
+  containers.podman.podman_container_info:
+    name: "postfix_{{ pod_mail }}"
+  register: 'db_info'
+
 - name: Mise en place du container postfix dans le pod
   containers.podman.podman_container:
     name: "postfix_{{ pod_mail }}"
@@ -11,6 +16,24 @@
       - "{{ pod_mail }}_postfix_vars_pool_mail:/var/spool/postfix/"
       - "{{ pod_mail }}_vol_mails:/srv/mail/"
       - "certbot_vol_etc_Letsencrypt:/etc/mailcert"
+  when: "not db_info.containers"
+
+
+- name: recheche de l etat du container mariadb
+  containers.podman.podman_container_info:
+    name: "mariadb_{{ pod_mail }}"
+  register: 'db_info'
+
+- name: script pour le remplissage de la db
+  template: 
+    src: "/{{ role_path }}/templates/mariadb/db_base-add.sql.j2"
+    dest: '/tmp/db_base-add.sql'
+  when: "not db_info.containers"
+
+- name: on deplace le script dans le volume
+  command:      
+    cmd: "mv /tmp/db_base-add.sql /home/{{ user_rootless }}/.local/share/containers/storage/volumes/{{ pod_mail }}_vol_db_boot/_data"
+  when: "not db_info.containers"
 
 - name: Mise en place du container mariadb dans le pod
   containers.podman.podman_container:
@@ -27,6 +50,13 @@
       MARIADB_DATABASE: "{{ mails_db_name }}"
       MARIADB_USER: "{{ mails_db_user }}"
       MARIADB_PASSWORD: "{{ mails_db_passwd }}"
+  when: "not db_info.containers"
+
+
+- name: recheche de l etat du container opendkim
+  containers.podman.podman_container_info:
+    name: "opendkim_{{ pod_mail }}"
+  register: 'db_info'
 
 - name: Mise en place du container dkim dans le pod
   containers.podman.podman_container:
@@ -36,6 +66,13 @@
     image: "{{ mails_image_dkim }}"
     cpus: "{{ mails_CPU_dkim }}"
     volume: "{{ pod_mail }}_vol_dkim:/etc/opendkim/"
+  when: "not db_info.containers"
+
+
+- name: recheche de l etat du container dovecot
+  containers.podman.podman_container_info:
+    name: "dovecot_{{ pod_mail }}"
+  register: 'db_info'
 
 - name: Mise en place du container dovecot dans le pod
   containers.podman.podman_container:
@@ -53,3 +90,4 @@
     - creation_systemd_pod_mail
     - persistance_pod_pod_mail
     - remove_mariadb_install_script
+  when: "not db_info.containers"

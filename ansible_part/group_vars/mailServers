@@ -34,4 +34,3 @@ mails_cert_loc_key: '/etc/mailCert/private/{{ mails_serv_name }}.key'
 #cert.pem  key.pem 
 
 
-
