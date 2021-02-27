@@ -19,7 +19,9 @@
     pod: "{{ pod_mail }}"
     image: "{{ mails_image_db }}"
     cpus: "{{ mails_CPU_db }}"
-    volume: "{{ pod_mail }}_vol_db:/var/lib/mysql"
+    volume: 
+      - "{{ pod_mail }}_vol_db:/var/lib/mysql"
+      - "{{ pod_mail }}_vol_db_boot:/docker-entrypoint-initdb.d"
     env:
       MYSQL_RANDOM_ROOT_PASSWORD: 1
       MARIADB_DATABASE: "{{ mails_db_name }}"
@@ -48,5 +50,6 @@
       - "{{ pod_mail }}_vol_mails:/srv/mail/"
       - "certbot_vol_etc_Letsencrypt:/etc/mailcert"
   notify: 
-    - creation_systemd_{{ pod_mail }}
-    - persistance-pod_{{ pod_mail }}
+    - creation_systemd_pod_mail
+    - persistance_pod_pod_mail
+    - remove_mariadb_install_script

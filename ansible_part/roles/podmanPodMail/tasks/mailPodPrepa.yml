@@ -36,9 +36,25 @@
     name: "{{ pod_mail }}_vol_db"
     state: present
 
+- name: Creation du volume du script de remplissage de la db
+  containers.podman.podman_volume:    
+    name: "{{ pod_mail }}_vol_db_boot"
+    state: present 
+
 - name: Creation du volume de stockage des mails
   containers.podman.podman_volume:
     name: "{{ pod_mail }}_vol_mails"
     state: present
     
+    
+- name: script pour le remplissage de la db
+  template: 
+    src: "/{{ role_path }}/templates/mariadb/db_base-add.sql.j2"
+    dest: '/tmp/db_base-add.sql'
+             
+- name: on deplace le script dans le volume
+  command:      
+    cmd: "mv /tmp/db_base-add.sql /home/{{ user_rootless }}/.local/share/containers/storage/volumes/{{ pod_mail }}_vol_db_boot/_data"
+             
+
 # voir pour creer dynamiquement un volume par nom de domaine ou par user ? risque de perte de visibilité ?
