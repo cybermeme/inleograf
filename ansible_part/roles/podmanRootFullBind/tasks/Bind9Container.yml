@@ -14,6 +14,9 @@
       - Bind9_var_cache_lib:/var/cache/bind
       - Bind9_var_lib_bin:/var/lib/bind
       - Bind9_var_log:/var/log
+  notify:
+    - creation_systemd_bind
+    - persistance_bind
 
 #https://hub.docker.com/_/bind9/plans/3af94cc6-b9c6-43c2-8658-e617ef977949?tab=instructions
 

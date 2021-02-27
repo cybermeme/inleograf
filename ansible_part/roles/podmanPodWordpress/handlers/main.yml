@@ -4,11 +4,6 @@
     chdir: '~/.config/systemd/user/'
     cmd: "podman generate systemd --files --name {{ pod_wordpress }}"
 
-- name: rechargement_systemd
-  systemd:
-    daemon-reload: true
-    scope: 'user'
-
 - name: persistance_pod_pod_wordpress
   systemd:
     scope: 'user'

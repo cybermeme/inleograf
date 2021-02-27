@@ -21,6 +21,5 @@
       ELASTICSEARCH_HOSTS: 'http://127.0.0.1:9200'
   notify:
     - creation_systemd_pod_ELK
-   # - rechargement_systemd
     - persistance_pod_pod_ELK
 

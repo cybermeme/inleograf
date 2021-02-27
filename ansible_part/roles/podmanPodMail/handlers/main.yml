@@ -9,11 +9,6 @@
     chdir: '~/.config/systemd/user/'
     cmd: "podman generate systemd --files --name {{ pod_mail }}"
 
-- name: rechargement_systemd
-  systemd:
-    daemon-reload: true
-    scope: 'user'
-
 - name: persistance-pod_{{ pod_mail }}
   systemd:
     scope: 'user'

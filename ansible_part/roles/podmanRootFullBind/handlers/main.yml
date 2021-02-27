@@ -1,0 +1,15 @@
+---
+- name: creation_systemd_bind
+  command:
+    chdir: '/etc/systemd/system/'
+    cmd: 'podman generate systemd --files --name bind9'
+ 
+- name: persistance_bind
+  systemd:
+    enabled: true
+    #state: 'started'
+    name: "{{ item }}"
+    daemon-reload: true
+  loop:
+    - 'container-bind9.service'
+

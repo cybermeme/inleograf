@@ -1,9 +1,15 @@
 ---
-- name: enable_haproxy
+- name: creation_systemd_haproxy
+  command:
+    chdir: '/etc/systemd/system/'
+    cmd: "podman generate systemd --files --name haproxy_{{haproxy_uid}}" 
+ 
+- name: persistance_haproxy
   systemd:
-    name: "{{ service_haproxy }}"
-    state: restarted
     enabled: true
-    daemon_reload: true
+    #state: 'started'
+    name: "{{ item }}"
+    daemon-reload: true
+  loop:
+    - "container-haproxy_{{haproxy_uid}}.service"
 
-# handlers file for installServeurBase

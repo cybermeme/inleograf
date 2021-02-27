@@ -16,6 +16,5 @@
       - "{{ gitlab_tag_id }}_vol_log:/var/log/gitlab"
   notify:
     - creation_systemd_gitlab_tag_id
-    - rechargement_systemd
     - persistance_gitlab_tag_id
 

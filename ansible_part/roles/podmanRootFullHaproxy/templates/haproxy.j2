@@ -93,6 +93,40 @@ backend bk_imap
     server podmail {{ frontal_ip }}:10093 send-proxy-v2
 
 
+#---------------------------------------------------------------------
+# Frontend Postfix
+#---------------------------------------------------------------------
+
+frontend ft_smtp
+  bind *:25
+  mode tcp
+  timeout client 1m
+  default_backend bk_postfix
+
+frontend ft_submi
+  bind *:587
+  mode tcp
+  timeout client 1m
+  default_backend bk_postfixsumi
+
+
+#---------------------------------------------------------------------
+# Backend Postfix
+#---------------------------------------------------------------------
+
+backend bk_postfix
+  mode tcp
+  timeout server 1m
+  timeout connect 5s
+  server postfix  {{ frontal_ip }}:{{ mails_port_smtp }} send-proxy
+
+backend bk_postfixsumi
+  mode tcp
+  timeout server 1m
+  timeout connect 5s
+  server postfix  {{ frontal_ip }}:{{ mails_port_submission }} send-proxy
+
+
 #-----------------
 # Front Web http
 #----------------

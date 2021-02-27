@@ -33,7 +33,6 @@
       NEXTCLOUD_TRUSTED_DOMAINS: "{{ nextcloud_fqdn }}"
   notify:
     - creation_systemd_pod_nextcloud
- #   - rechargement_systemd
     - persistance_pod_pod_nextcloud
 
 # https://fedoramagazine.org/nextcloud-20-on-fedora-linux-with-podman/

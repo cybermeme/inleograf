@@ -49,5 +49,4 @@
       - "certbot_vol_etc_Letsencrypt:/etc/mailcert"
   notify: 
     - creation_systemd_{{ pod_mail }}
-   # - rechargement_systemd
     - persistance-pod_{{ pod_mail }}

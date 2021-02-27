@@ -17,4 +17,6 @@
       - 'haproxy_etc:/usr/local/etc/haproxy/'
       - 'haproxy_stats:/var/lib/haproxy/'
       - 'certbot_vol_etc_Letsencrypt:/etc/certs'
-
+  notify:
+    - creation_systemd_haproxy
+    - persistance_haproxy

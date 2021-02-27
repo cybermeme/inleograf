@@ -20,5 +20,18 @@ mails_serv_name: 'cthulhu'
 mails_db_user: usermaildb
 mails_db_passwd: 'superpassword'
 mails_db_name: "mailserver"
-mails_cert_loc_crt: '/etc/ssl/mailCert/{{ mails_serv_name }}-fullchain.pem'
-mails_cert_loc_key: '/etc/ssl/mailCert/private/{{ mails_serv_name }}.key'
+mails_cert_loc_crt: '/etc/mailCert/{{ mails_serv_name }}-fullchain.pem'
+mails_cert_loc_key: '/etc/mailCert/private/{{ mails_serv_name }}.key'
+
+
+
+
+#- "certbot_vol_etc_Letsencrypt:/etc/mailcert"
+
+
+
+#/etc/certs/haproxy.pem
+#cert.pem  key.pem 
+
+
+

@@ -33,7 +33,6 @@
       PS_DOMAIN: "{{ prestashop_fqdn }}"
   notify:
     - creation_systemd_pod_prestashop
-    - rechargement_systemd
     - persistance_pod_pod_prestashop
 
 # https://hub.docker.com/_/mariadb

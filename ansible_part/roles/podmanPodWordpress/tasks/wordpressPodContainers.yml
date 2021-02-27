@@ -30,7 +30,6 @@
       WORDPRESS_DB_PASSWORD: "{{ wordpress_dbpassw }}"
   notify:
     - creation_systemd_pod_wordpress
- #   - rechargement_systemd
     - persistance_pod_pod_wordpress
 
 # https://hub.docker.com/_/mariadb

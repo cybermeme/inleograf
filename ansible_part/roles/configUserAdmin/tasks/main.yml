@@ -52,5 +52,6 @@
     regex: "^# User specific aliases and functions"
     insertafter: "^#"
     line: "export XDG_RUNTIME_DIR=/run/user/$(id -u {{ user_rootless }})"
-#
+
+
 # tasks file for configUserAdmin
