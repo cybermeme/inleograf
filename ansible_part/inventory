@@ -1,6 +1,5 @@
 [frontal:children]
-mailCentos1
-
+allServers
 
 [nextcloud:children]
 webservers
@@ -10,7 +9,6 @@ webservers
 
 [wordpress:children]
 webservers
-ubuntu1
 
 [scm:children]
 webservers
@@ -26,7 +24,6 @@ mailCentos1
 RedHat
 
 [ubuntu1]
-192.168.122.228
 
 [mailCentos1]
 192.168.122.119

@@ -11,6 +11,7 @@
     pod: "{{ pod_wordpress }}"
     image: "{{ wordpress_db_image }}"
     cpus: "{{ wordpress_CPU_db }}"
+    restart_policy: 'always'
     volume: "{{ pod_wordpress }}_vol_db:/var/lib/mysql"
     env:
       MYSQL_RANDOM_ROOT_PASSWORD: 1
@@ -32,6 +33,7 @@
     pod: "{{ pod_wordpress }}"
     image: "{{ wordpress_web_image }}"
     cpus: "{{ wordpress_CPU_web }}"
+    restart_policy: 'always'
     volume:
       - "{{ pod_wordpress }}_vol_themes:/var/www/html/wp-content/themes/"
       - "{{ pod_wordpress }}_vol_plugins:/var/www/html/wp-content/plugins/"

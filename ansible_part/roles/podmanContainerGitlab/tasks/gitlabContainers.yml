@@ -11,6 +11,7 @@
     state: started
     image: "{{ gitlab_images_vers }}"
     cpus: "{{ gitlab_CPU }}"
+    restart_policy: 'always'
     hostname: "{{ gitlab_fqdn }}"
     publish:
       - "{{ gitlab_port_ssh }}:22"

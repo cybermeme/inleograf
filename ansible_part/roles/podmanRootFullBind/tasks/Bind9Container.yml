@@ -9,6 +9,7 @@
     name: 'bind9'
     image: "{{ bind_image }}"
     cpus: "{{ bind_CPU }}"
+    restart_policy: 'always'
     state: started
     # privileged: true
     publish:

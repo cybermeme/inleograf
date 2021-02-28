@@ -11,6 +11,7 @@
     pod: "{{ pod_mail }}"
     image: "{{ mails_image_postfix }}"
     cpus: "{{ mails_CPU_postfix }}"
+    restart_policy: 'always'
     volume: 
       - "{{ pod_mail }}_postfix_etc_postfix:/etc/postfix/"
       - "{{ pod_mail }}_postfix_vars_pool_mail:/var/spool/postfix/"
@@ -42,6 +43,7 @@
     pod: "{{ pod_mail }}"
     image: "{{ mails_image_db }}"
     cpus: "{{ mails_CPU_db }}"
+    restart_policy: 'always'
     volume: 
       - "{{ pod_mail }}_vol_db:/var/lib/mysql"
       - "{{ pod_mail }}_vol_db_boot:/docker-entrypoint-initdb.d"
@@ -65,6 +67,7 @@
     pod: "{{ pod_mail }}" 
     image: "{{ mails_image_dkim }}"
     cpus: "{{ mails_CPU_dkim }}"
+    restart_policy: 'always'
     volume: "{{ pod_mail }}_vol_dkim:/etc/opendkim/"
   when: "not db_info.containers"
 
@@ -82,6 +85,7 @@
     image: "{{ mails_image_dovecot }}"
     recreate: true
     cpus: "{{ mails_CPU_dovecot }}"
+    restart_policy: 'always'
     volume: 
       - "{{ pod_mail }}_dovecot_etc_dovecot:/etc/dovecot/"
       - "{{ pod_mail }}_vol_mails:/srv/mail/"

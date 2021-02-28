@@ -21,6 +21,7 @@
     state: started
     image: "{{ haproxy_image }}"
     cpus: "{{ haproxy_CPU }}"
+    restart_policy: 'always'
     publish:
       - "25:25"
       - "80:80"
