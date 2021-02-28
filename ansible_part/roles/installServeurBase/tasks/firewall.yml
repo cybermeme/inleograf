@@ -34,3 +34,38 @@
     state: disabled
   when: ansible_os_family == 'RedHat'
 
+
+- name: Installation de ufw
+  package:
+    name: ufw
+    state: latest
+  when: ansible_os_family == 'Debian'
+
+- name: ouverture des ports du firewall pour les mails et certificats
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "{{ item }}"
+  loop:
+      # ports pour services email
+      - smtp
+      - submission
+      - pop3s
+      - imaps
+      - '4190'
+      # ports pour Web
+      - http
+      - https
+      # ports pour le DNS
+      - '53'
+  when: ansible_os_family == 'Debian'
+
+- name: ouverture des ports du firewall pour le UDP
+  ufw:
+    rule: allow
+    proto: udp
+    port: "{{ item }}"
+  loop:
+      # ports pour le DNS
+      - '53'
+  when: ansible_os_family == 'Debian'

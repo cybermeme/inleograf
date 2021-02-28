@@ -4,6 +4,5 @@
   hosts: allServers
   become: true
   remote_user: "{{ base_user }}"
-  gather_facts: false
   roles:
     - configUserAdmin

@@ -10,6 +10,7 @@ webservers
 
 [wordpress:children]
 webservers
+ubuntu1
 
 [scm:children]
 webservers
@@ -24,6 +25,8 @@ mailCentos1
 [supervision:children]
 RedHat
 
+[ubuntu1]
+192.168.122.228
 
 [mailCentos1]
 192.168.122.119
@@ -35,6 +38,8 @@ RedHat
 [RedHat:children]
 mailCentos1
 
+[Debian:children]
+ubuntu1
 
 [webservers:children]
 webCentos1
@@ -43,3 +48,4 @@ webCentos1
 [allServers:children]
 mailCentos1
 webCentos1
+ubuntu1

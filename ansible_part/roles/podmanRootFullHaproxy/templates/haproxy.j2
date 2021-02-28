@@ -75,23 +75,30 @@ defaults
 # frontend Dovecot
 #---------------------------------------------------------------------
 
-frontend ft_imap
+frontend ft_imaps
     bind *:993 ssl crt /etc/certs/haproxy.pem 
     mode tcp
-    default_backend bk_imap
+    default_backend bk_imaps
 
+frontend ft_pops
+    bind *:995 ssl crt /etc/certs/haproxy.pem 
+    mode tcp
+    default_backend bk_pops
 
 #---------------------------------------------------------------------
 # Backends Dovecot
 #---------------------------------------------------------------------
 
-backend bk_imap
+backend bk_imaps
     mode tcp
    # balance leastconn
    # stick store-request src
    # stick-table type ip size 200k expire 30m
-    server podmail {{ frontal_ip }}:10093 send-proxy-v2
+    server podmail {{ frontal_ip }}:{{ mails_port_imaps }} send-proxy-v2
 
+backend bk_pops
+    mode tcp
+    server podmail {{ frontal_ip }}:{{ mails_port_pop3s }} send-proxy-v2
 
 #---------------------------------------------------------------------
 # Frontend Postfix
@@ -125,6 +132,25 @@ backend bk_postfixsumi
   timeout server 1m
   timeout connect 5s
   server postfix  {{ frontal_ip }}:{{ mails_port_submission }} send-proxy
+
+
+#---------------------------------------------------------------------
+# frontend Sieve
+#---------------------------------------------------------------------
+
+frontend ft_imap
+    bind *:4190
+    mode tcp
+    default_backend bk_imap
+
+
+#---------------------------------------------------------------------
+# Backends Sieve
+#---------------------------------------------------------------------
+
+backend bk_imap
+    mode tcp
+    server podmail {{ frontal_ip }}:{{ mails_port_sieve }}
 
 
 #-----------------

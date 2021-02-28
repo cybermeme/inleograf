@@ -26,10 +26,10 @@
   notify: restart_sshd
 
 #PodmanAdmin
-- name: creation du compte administrateur de pod Rootless
+- name: creation du compte administrateur de pod Rootless 
   user:
     name: "{{ user_rootless }}"
-    
+
 - name: copie de la clef publique pour le ssh pour {{ user_rootless }}
   authorized_key:
     user: "{{ user_rootless }}"

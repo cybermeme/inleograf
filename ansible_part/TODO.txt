@@ -5,3 +5,9 @@ mettre en place le chargement des variables sensibles stoquées dans un ansible-
 fusionner playbook_createUser_todofirst.yml et playbooks_total_demo.yml
 
 mettre ue condition dans podmail pour attendre la fin du chargement de la db avant de supprimer le fichier .sql
+
+Creer un utilisateur par service rootless
+
+Faire un script pour verifier l'état des containers et les redémarer si besion (voir dans les systemd)
+
+!!! Si ubuntu, impossible de gerrer les CPU car en version 2 dans quel cas, il faut modifier les roles !!!

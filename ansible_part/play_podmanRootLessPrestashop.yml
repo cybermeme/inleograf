@@ -1,6 +1,6 @@
 ---
 - name: Mise en place des pods et Containers pour Prestashop
-  hosts: webservers
+  hosts: prestashop
   gather_facts: false
   become: false
   remote_user: "{{ user_rootless }}"

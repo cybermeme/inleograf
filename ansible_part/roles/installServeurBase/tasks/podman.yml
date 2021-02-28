@@ -8,5 +8,18 @@
     - podman
   when: ansible_os_family == 'RedHat'
 
+  
+- name: Installation de Podman
+  package:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - runc
+    - podman
+  vars:
+    tests:
+      - '"ansible_distribution" == "Ubuntu"'
+      - '"ansible_distribution_version" is version("20.09", ">")'
+  when: tests is all
 
 #crun va serir pour utiliser podman en rootless sur centos stream 8
