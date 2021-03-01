@@ -75,82 +75,82 @@ defaults
 # frontend Dovecot
 #---------------------------------------------------------------------
 
-frontend ft_imaps
-    bind *:993 ssl crt /etc/certs/haproxy.pem 
-    mode tcp
-    default_backend bk_imaps
+#frontend ft_imaps
+#    bind *:993 ssl crt /etc/certs/haproxy.pem 
+#    mode tcp
+#    default_backend bk_imaps
 
-frontend ft_pops
-    bind *:995 ssl crt /etc/certs/haproxy.pem 
-    mode tcp
-    default_backend bk_pops
+#frontend ft_pops
+#    bind *:995 ssl crt /etc/certs/haproxy.pem 
+#    mode tcp
+#    default_backend bk_pops
 
 #---------------------------------------------------------------------
 # Backends Dovecot
 #---------------------------------------------------------------------
 
-backend bk_imaps
-    mode tcp
+#backend bk_imaps
+#    mode tcp
    # balance leastconn
    # stick store-request src
    # stick-table type ip size 200k expire 30m
-    server podmail {{ frontal_ip }}:{{ mails_port_imaps }} send-proxy-v2
+#    server podmail {{ frontal_ip }}:{{ mails_port_imaps }} send-proxy-v2
 
-backend bk_pops
-    mode tcp
-    server podmail {{ frontal_ip }}:{{ mails_port_pop3s }} send-proxy-v2
+#backend bk_pops
+#    mode tcp
+#    server podmail {{ frontal_ip }}:{{ mails_port_pop3s }} send-proxy-v2
 
 #---------------------------------------------------------------------
 # Frontend Postfix
 #---------------------------------------------------------------------
 
-frontend ft_smtp
-  bind *:25
-  mode tcp
-  timeout client 1m
-  default_backend bk_postfix
+#frontend ft_smtp
+#  bind *:25
+#  mode tcp
+#  timeout client 1m
+#  default_backend bk_postfix
 
-frontend ft_submi
-  bind *:587
-  mode tcp
-  timeout client 1m
-  default_backend bk_postfixsumi
+#frontend ft_submi
+#  bind *:587
+#  mode tcp
+#  timeout client 1m
+#  default_backend bk_postfixsumi
 
 
 #---------------------------------------------------------------------
 # Backend Postfix
 #---------------------------------------------------------------------
 
-backend bk_postfix
-  mode tcp
-  timeout server 1m
-  timeout connect 5s
-  server postfix  {{ frontal_ip }}:{{ mails_port_smtp }} send-proxy
+#backend bk_postfix
+#  mode tcp
+#  timeout server 1m
+#  timeout connect 5s
+#  server postfix  {{ frontal_ip }}:{{ mails_port_smtp }} send-proxy
 
-backend bk_postfixsumi
-  mode tcp
-  timeout server 1m
-  timeout connect 5s
-  server postfix  {{ frontal_ip }}:{{ mails_port_submission }} send-proxy
+#backend bk_postfixsumi
+#  mode tcp
+#  timeout server 1m
+#  timeout connect 5s
+#  server postfix  {{ frontal_ip }}:{{ mails_port_submission }} send-proxy
 
 
 #---------------------------------------------------------------------
 # frontend Sieve
 #---------------------------------------------------------------------
 
-frontend ft_imap
-    bind *:4190
-    mode tcp
-    default_backend bk_imap
+#frontend ft_imap
+#    bind *:4190
+#    mode tcp
+#    default_backend bk_imap
 
 
 #---------------------------------------------------------------------
 # Backends Sieve
 #---------------------------------------------------------------------
 
-backend bk_imap
-    mode tcp
-    server podmail {{ frontal_ip }}:{{ mails_port_sieve }}
+#backend bk_imap
+#    mode tcp
+#    server podmail {{ frontal_ip }}:{{ mails_port_sieve }}
 
 
 #-----------------

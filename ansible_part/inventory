@@ -16,35 +16,21 @@ webservers
 [supervision:children]
 webservers
 
-
-[mailServers:children]
-mailCentos1
-
 [supervision:children]
 RedHat
 
-[ubuntu1]
-
-[mailCentos1]
-#192.168.122.119
-192.168.122.142
 
 [webCentos1]
 #192.168.122.119
-###13.53.40.152
 192.168.122.142
 
 [RedHat:children]
-mailCentos1
 
 [Debian:children]
-ubuntu1
 
 [webservers:children]
 webCentos1
 
 
 [allServers:children]
-mailCentos1
 webCentos1
-ubuntu1

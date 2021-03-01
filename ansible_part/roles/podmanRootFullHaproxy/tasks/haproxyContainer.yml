@@ -29,13 +29,13 @@
     cpus: "{{ haproxy_CPU }}"
     restart_policy: 'always'
     publish:
-      - "25:25"
+    #  - "25:25"
       - "80:80"
       - "443:443"
-      - "587:587"
-      - "993:993"
-      - "995:995"
-      - "4190:4190"
+    #  - "587:587"
+    #  - "993:993"
+    #  - "995:995"
+    #  - "4190:4190"
     volume:
       - 'haproxy_etc:/usr/local/etc/haproxy/'
       - 'haproxy_stats:/var/lib/haproxy/'

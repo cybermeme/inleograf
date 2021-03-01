@@ -38,8 +38,3 @@ gitlab_fqdn: 'gitlab.exemple.local'
 ELK_fqdn: 'elk.exemple.local'
 
 
-mails_fqdn: 'exemple.local'
-mails_db_user: usermaildb
-mails_db_passwd: 'superpassword'
-mails_db_name: "mailserver"
-
