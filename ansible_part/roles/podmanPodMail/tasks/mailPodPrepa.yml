@@ -45,6 +45,51 @@
   containers.podman.podman_volume:
     name: "{{ pod_mail }}_vol_mails"
     state: present
-             
 
+
+- name: preparation de remplissage du volume de fichiers de configuration postfix
+  template:
+    src: "{{ role_path }}/templates/postfix/main.cf.j2"
+    dest: "/tmp/main.cf"
+
+- name: preparation de remplissage du volume de fichiers de configuration postfix
+  template:
+    src: "{{ role_path }}/templates/postfix/master.cf.j2"
+    dest: "/tmp/master.cf"
+
+- name: preparation de remplissage du volume de fichiers de configuration postfix
+  template:
+    src: "{{ role_path }}/templates/postfix/mysql-virtual-alias-maps.cf.j2"
+    dest: "/tmp/mysql-virtual-alias-maps.cf"
+
+- name: preparation de remplissage du volume de fichiers de configuration postfix
+  template:
+    src: "{{ role_path }}/templates/postfix/mysql-virtual-email2email.cf.j2"
+    dest: "/tmp/mysql-virtual-email2email.cf"
+
+- name: preparation de remplissage du volume de fichiers de configuration postfix
+  template:
+    src: "{{ role_path }}/templates/postfix/mysql-virtual-mailbox-maps.cf.j2"
+    dest: "/tmp/mysql-virtual-mailbox-maps.cf"
+      
+- name: preparation de remplissage du volume de fichiers de configuration postfix
+  template:
+    src: "{{ role_path }}/templates/postfix/mysql-virtual-mailbox-domains.cf.j2"
+    dest: "/tmp/mysql-virtual-mailbox-domains.cf"
+
+
+- name: remplissage du volume de fichiers de configuration postfix
+  command:
+    cmd: "mv /tmp/{{ item }} /home/{{ user_rootless }}/.local/share/containers/storage/volumes/{{ pod_mail }}_postfix_etc_postfix/_data"
+  loop:
+    - main.cf
+    - master.cf
+    - mysql-virtual-alias-maps.cf
+    - mysql-virtual-email2email.cf
+    - mysql-virtual-mailbox-maps.cf
+    - mysql-virtual-mailbox-domains.cf
+
+
+
+# https://www.linode.com/docs/guides/email-with-postfix-dovecot-and-mysql/
 # voir pour creer dynamiquement un volume par nom de domaine ou par user ? risque de perte de visibilité ?

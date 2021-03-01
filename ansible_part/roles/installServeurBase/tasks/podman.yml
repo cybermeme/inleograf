@@ -1,4 +1,16 @@
 ---
+- name: Installation de crund pour Podman
+  yum:
+    name: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_7/x86_64/runc-1.0.0-149.rc93.el7.x86_64.rpm
+    state: present
+  when: ansible_distribution == "Amazon"
+
+- name: Installation de Podman
+  package:
+    name: podman
+    state: latest
+  when: ansible_distribution == "Amazon" 
+
 - name: Installation de Podman
   package:
     name: "{{ item }}"
@@ -7,7 +19,6 @@
     - crun
     - podman
   when: ansible_os_family == 'RedHat'
-
   
 - name: Installation de Podman
   package:

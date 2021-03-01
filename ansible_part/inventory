@@ -26,11 +26,11 @@ RedHat
 [ubuntu1]
 
 [mailCentos1]
-192.168.122.119
+#192.168.122.119
 
 [webCentos1]
-192.168.122.119
-
+#192.168.122.119
+13.53.40.152
 
 [RedHat:children]
 mailCentos1

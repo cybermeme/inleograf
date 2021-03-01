@@ -1,4 +1,53 @@
 ---
+### AWS ###
+
+- name: ajout du repo centos de base sur aws
+  yum_repository:
+    name: libcontainer
+    description: LIBCONTAINER YUM REPO
+    file: podman_repos
+    baseurl: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_7/
+  when: ansible_distribution == "Amazon" 
+
+- name: ajout du repo pour la libfuse3
+  yum_repository:
+    name: libfuse3
+    description: LIBFUSE3 YUM REPO
+    file: podman_repos
+    baseurl: http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/
+  when: ansible_distribution == "Amazon"
+
+- name: activation du repo copr selinux
+  yum:
+    name: yum-plugin-copr
+    state: present
+  when: ansible_distribution == "Amazon"
+
+- name: instalation du copr container-selinux
+  command: 'yum -y copr enable lsm5/container-selinux'
+  when: ansible_distribution == "Amazon"
+
+- name: ajout du repo epel pour centos pour aws
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+  when: ansible_distribution == "Amazon"
+
+- name: Installation de python3
+  package:
+    name: python3-pip
+    state: present
+  when: ansible_distribution == "Amazon"
+
+- name: installation de firewalld sur aws
+  package:
+    name: firewalld
+    state: present
+  when: ansible_distribution == "Amazon"
+
+
+### RedHat ###
+
 - name: Activation du Firewall firewalld
   systemd:
     name: firewalld.service
@@ -34,6 +83,8 @@
     state: disabled
   when: ansible_os_family == 'RedHat'
 
+
+### Debian ###
 
 - name: Installation de ufw
   package:

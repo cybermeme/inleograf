@@ -1,7 +1,6 @@
 ---
 - name: Mise en place des pods et Containers pour les mails
   hosts: mailServers
-  gather_facts: false
   become: false
   remote_user: "{{ user_rootless }}"
   roles:

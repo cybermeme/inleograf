@@ -10,4 +10,4 @@ VOLUME     [ "/var/spool/postfix", "/etc/postfix" ]
 
 EXPOSE 25/tcp 587/tcp
 
-CMD ['/usr/sbin/postfix -c /etc/postfix start >/dev/null 2>&1']
+CMD [ "/usr/sbin/postfix", "-c", "/etc/postfix start" ]
