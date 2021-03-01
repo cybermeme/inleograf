@@ -1,4 +1,10 @@
 ---
+- name: SE linux rule for Haproxy
+  ansible.posix.seboolean:
+    name: haproxy_connect_any
+    state: yes
+    persistent: yes
+
 - name: recheche de l etat du container haproxy
   containers.podman.podman_container_info:
     name: "haproxy_{{haproxy_uid}}"

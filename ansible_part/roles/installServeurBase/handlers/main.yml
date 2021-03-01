@@ -1,0 +1,7 @@
+- name: reboot_server
+  reboot:  
+             
+- name: wait_serveur_reboot
+  wait_for:                                                                                                                                                                                                                                   
+    port: '22'
+    delay: '20'                   
