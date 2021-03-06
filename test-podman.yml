@@ -1,0 +1,8 @@
+---
+- name: test podman
+  hosts: webservers
+  gather_facts: false
+  become: false
+  remote_user: "{{ user_rootless }}"
+  roles:
+    - test-podman

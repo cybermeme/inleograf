@@ -1,0 +1,24 @@
+---
+- name:
+  containers.podman.podman_container_info:
+    name: 'mariadb_test'
+  register: 'db_info'
+
+- debug:
+  #  msg: "{{ db_info.HostConfig.state.status }}"
+    msg: "{{ item.key }}: {{ item.value }}"
+  loop: "{{ lookup('dict', db_info ) }}"
+#  when: "'running' in db_info"
+
+- name: Mise en place du container mariadb 
+  containers.podman.podman_container:
+    name: 'mariadb_test'
+    state: started
+    image: "{{ mails_image_db }}"
+    cpus: "{{ mails_CPU_db }}"
+    env:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MARIADB_DATABASE: "{{ mails_db_name }}"
+      MARIADB_USER: "{{ mails_db_user }}"
+      MARIADB_PASSWORD: "{{ mails_db_passwd }}"
+  when: "not db_info.containers"
